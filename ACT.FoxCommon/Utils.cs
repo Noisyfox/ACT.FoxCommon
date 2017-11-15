@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -41,6 +42,13 @@ namespace ACT.FoxCommon
         public static bool IsGameExeProcess(Process p)
         {
             return IsGameExePath(p.MainModule.FileName);
+        }
+
+        public static long TimestampMillisFromDateTime(DateTime date)
+        {
+            var unixTimestamp = date.Ticks - new DateTime(1970, 1, 1).Ticks;
+            unixTimestamp /= TimeSpan.TicksPerMillisecond;
+            return unixTimestamp;
         }
     }
 }

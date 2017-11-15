@@ -26,7 +26,7 @@ namespace ACT.FoxCommon.localization
             }
         }
 
-        internal LanguageDef(string code, string eName, string lName)
+        public LanguageDef(string code, string eName, string lName)
         {
             LangCode = code;
             EnglishName = eName;

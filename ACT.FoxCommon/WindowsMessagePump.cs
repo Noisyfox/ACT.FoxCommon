@@ -3,37 +3,37 @@ using ACT.FoxCommon.core;
 
 namespace ACT.FoxCommon
 {
-    public class WindowsMessagePump<TMainController, TPlugin> : IPluginComponentBase<TMainController, TPlugin>, IDisposable
+    public class WindowsMessagePumpBase<TMainController, TPlugin> : IPluginComponentBase<TMainController, TPlugin>, IDisposable
         where TPlugin : PluginBase<TMainController>
         where TMainController : MainControllerBase
     {
-        private TPlugin _plugin;
-        private TMainController _controller;
-        
+        protected TPlugin Plugin { get; private set; }
+        protected TMainController Controller { get; private set; }
+
         private Win32APIUtils.WinEventDelegate _hookPtrDele;
         private IntPtr _hookPtrForeground = IntPtr.Zero;
         private string _lastActivatedProcessPath = null;
         private uint _lastActivatedProcessPid = 0;
 
-        public void AttachToAct(TPlugin plugin)
+        public virtual void AttachToAct(TPlugin plugin)
         {
-            _plugin = plugin;
-            _controller = plugin.Controller;
+            Plugin = plugin;
+            Controller = plugin.Controller;
         }
 
-        public void PostAttachToAct(TPlugin plugin)
+        public virtual void PostAttachToAct(TPlugin plugin)
         {
             _hookPtrDele = WinEventProc;
             _hookPtrForeground = Win32APIUtils.SetWinEventHook(Win32APIUtils.EVENT_SYSTEM_FOREGROUND, Win32APIUtils.EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, _hookPtrDele, 0, 0, Win32APIUtils.WINEVENT_OUTOFCONTEXT);
             _hookPtrDele(IntPtr.Zero, Win32APIUtils.EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, 0, 0, 0, 0);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Win32APIUtils.UnhookWinEvent(_hookPtrForeground);
             _hookPtrForeground = IntPtr.Zero;
             _hookPtrDele = null;
-            _plugin = null;
+            Plugin = null;
         }
 
 //        [DllImport("user32.dll")]
@@ -81,7 +81,7 @@ namespace ACT.FoxCommon
             {
                 _lastActivatedProcessPath = path;
                 _lastActivatedProcessPid = pid;
-                _controller.NotifyActivatedProcessPathChanged(false, path, pid);
+                Controller.NotifyActivatedProcessPathChanged(false, path, pid);
             }
             //            Log.Text += GetActiveWindowTitle() + "\r\n";
 //            _controller.NotifyLogMessageAppend(false, path + "\r\n");
