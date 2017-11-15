@@ -59,7 +59,7 @@ namespace ACT.FoxCommon.localization
             {
                 if (control.InvokeRequired)
                 {
-                    control.Invoke((MethodInvoker)delegate { action(); });
+                    control.SafeInvoke((MethodInvoker)delegate { action(); });
                 }
                 else
                 {
