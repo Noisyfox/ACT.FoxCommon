@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACT.FoxCommon
+namespace ACT.FoxCommon.shortcut
 {
-    public class Class1
+
+    public enum PluginShortcut
     {
+        HideOverlay
     }
 }
