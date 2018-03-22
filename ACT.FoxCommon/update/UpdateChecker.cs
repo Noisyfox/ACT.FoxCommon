@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using ACT.FoxCommon.core;
 using Newtonsoft.Json.Linq;
@@ -63,6 +64,9 @@ namespace ACT.FoxCommon.update
 
                 try
                 {
+                    //specify to use TLS 1.2 as default connection
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
                     string responseBody;
                     using (var client = new HttpClient())
                     using (var request = new HttpRequestMessage())
