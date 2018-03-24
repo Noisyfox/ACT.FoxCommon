@@ -28,10 +28,7 @@ namespace ACT.FoxCommon.core
                 while (_workingThread != null && _workingThread.IsAlive)
                 {
                     WorkingThreadStopping = true;
-                    lock (_sleepObj)
-                    {
-                        Monitor.Pulse(_sleepObj);
-                    }
+                    WakeUp();
                     Monitor.Wait(WorkingThreadLock, 100);
                 }
                 _workingThread = null;
@@ -78,6 +75,14 @@ namespace ACT.FoxCommon.core
         protected void SafeSleep(int millisecondsTimeout)
         {
             SafeSleep(TimeSpan.FromMilliseconds(millisecondsTimeout));
+        }
+
+        protected void WakeUp()
+        {
+            lock (_sleepObj)
+            {
+                Monitor.Pulse(_sleepObj);
+            }
         }
     }
 }
