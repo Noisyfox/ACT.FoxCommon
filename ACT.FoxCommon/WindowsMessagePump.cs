@@ -10,10 +10,11 @@ namespace ACT.FoxCommon
         protected TPlugin Plugin { get; private set; }
         protected TMainController Controller { get; private set; }
 
-        private Win32APIUtils.WinEventDelegate _hookPtrDele;
-        private IntPtr _hookPtrForeground = IntPtr.Zero;
+//        private Win32APIUtils.WinEventDelegate _hookPtrDele;
+//        private IntPtr _hookPtrForeground = IntPtr.Zero;
         private string _lastActivatedProcessPath = null;
         private uint _lastActivatedProcessPid = 0;
+        private readonly ForgeProcessDetector _forgeProcessDetector = new ForgeProcessDetector();
 
         public virtual void AttachToAct(TPlugin plugin)
         {
@@ -23,16 +24,18 @@ namespace ACT.FoxCommon
 
         public virtual void PostAttachToAct(TPlugin plugin)
         {
-            _hookPtrDele = WinEventProc;
-            _hookPtrForeground = Win32APIUtils.SetWinEventHook(Win32APIUtils.EVENT_SYSTEM_FOREGROUND, Win32APIUtils.EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, _hookPtrDele, 0, 0, Win32APIUtils.WINEVENT_OUTOFCONTEXT);
-            _hookPtrDele(IntPtr.Zero, Win32APIUtils.EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, 0, 0, 0, 0);
+//            _hookPtrDele = WinEventProc;
+//            _hookPtrForeground = Win32APIUtils.SetWinEventHook(Win32APIUtils.EVENT_SYSTEM_FOREGROUND, Win32APIUtils.EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, _hookPtrDele, 0, 0, Win32APIUtils.WINEVENT_OUTOFCONTEXT);
+//            _hookPtrDele(IntPtr.Zero, Win32APIUtils.EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, 0, 0, 0, 0);
+            _forgeProcessDetector.StartWorkingThread(this);
         }
 
         public virtual void Dispose()
         {
-            Win32APIUtils.UnhookWinEvent(_hookPtrForeground);
-            _hookPtrForeground = IntPtr.Zero;
-            _hookPtrDele = null;
+            _forgeProcessDetector.StopWorkingThread();
+//            Win32APIUtils.UnhookWinEvent(_hookPtrForeground);
+//            _hookPtrForeground = IntPtr.Zero;
+//            _hookPtrDele = null;
             Plugin = null;
         }
 
@@ -86,6 +89,19 @@ namespace ACT.FoxCommon
             //            Log.Text += GetActiveWindowTitle() + "\r\n";
 //            _controller.NotifyLogMessageAppend(false, path + "\r\n");
 
+        }
+
+        private class ForgeProcessDetector : BaseThreading<WindowsMessagePumpBase<TMainController, TPlugin>>
+        {
+            protected override void DoWork(WindowsMessagePumpBase<TMainController, TPlugin> context)
+            {
+                while (!WorkingThreadStopping)
+                {
+                    context.WinEventProc(IntPtr.Zero, Win32APIUtils.EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, 0, 0, 0, 0);
+
+                    SafeSleep(1000);
+                }
+            }
         }
     }
 }
