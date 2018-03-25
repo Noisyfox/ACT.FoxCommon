@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Media;
 using FontFamily = System.Windows.Media.FontFamily;
 
@@ -49,6 +50,18 @@ namespace ACT.FoxCommon
             var unixTimestamp = date.Ticks - new DateTime(1970, 1, 1).Ticks;
             unixTimestamp /= TimeSpan.TicksPerMillisecond;
             return unixTimestamp;
+        }
+
+        public static void SetValue(this TrackBar bar, int value, int defaultValue)
+        {
+            try
+            {
+                bar.Value = value;
+            }
+            catch (Exception ex)
+            {
+                bar.Value = defaultValue;
+            }
         }
     }
 }
