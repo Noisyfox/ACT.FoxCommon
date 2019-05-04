@@ -68,9 +68,9 @@ namespace ACT.FoxCommon.localization
             }
         }
 
-        public static string GetString(string name)
+        public static string GetString(string name, string defaultValue = null)
         {
-            return _resourceManager.GetString(name, _culture);
+            return _resourceManager.GetString(name, _culture) ?? defaultValue;
         }
     }
 }
