@@ -91,7 +91,16 @@ namespace ACT.FoxCommon
             {
                 return null;
             }
-            return new Tuple<string, uint>(Process.GetProcessById((int)pid).MainModule.FileName, pid);
+
+            try
+            {
+                var processPath = Process.GetProcessById((int)pid).MainModule?.FileName;
+                return processPath == null ? null : new Tuple<string, uint>(processPath, pid);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
