@@ -63,5 +63,10 @@ namespace ACT.FoxCommon
                 bar.Value = defaultValue;
             }
         }
+
+        /// <summary>
+        /// Whether the plugin is currently running in CafeACT (a modified version of the original ACT).
+        /// </summary>
+        public static bool IsCafeACT => System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name == "CafeACT";
     }
 }

@@ -13,6 +13,12 @@ namespace ACT.FoxCommon.update
         where TPlugin : PluginBase<TMainController>
         where TMainController : MainControllerBase
     {
+        /// <summary>
+        /// Disable & hide update checker if we are running inside CafeACT
+        /// since it has its own plugin manager.
+        /// </summary>
+        public static readonly bool IsEnabled = !Utils.IsCafeACT;
+
         protected abstract string UpdateUrl { get; }
 
         private readonly UpdateCheckerThread _workingThread = new UpdateCheckerThread();
@@ -29,6 +35,11 @@ namespace ACT.FoxCommon.update
 
         public void CheckUpdate(bool forceNotify)
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             _workingThread.StartWorkingThread(new UpdateContext
             {
                 Service = this,
