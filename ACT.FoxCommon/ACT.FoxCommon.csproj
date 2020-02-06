@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="Ext.cs" />
     <Compile Include="core\IPluginComponent.cs" />
+    <Compile Include="GameClientInfo.cs" />
     <Compile Include="localization\LanguageDef.cs" />
     <Compile Include="localization\LocalizationBase.cs" />
     <Compile Include="core\MainControllerBase.cs" />
