@@ -44,11 +44,27 @@ namespace ACT.FoxCommon.localization
             }
         }
 
+        private static void UpdateComboBoxValues(Control control)
+        {
+            if (control is ComboBox combo)
+            {
+                var items = combo.Items.Cast<object>().ToList();
+                if (items.All(obj => obj is string))
+                {
+                    var translated = items.Cast<string>().Select(key => GetString(control.Name + key) ?? key);
+
+                    combo.Items.Clear();
+                    combo.Items.AddRange(translated.ToArray());
+                }
+            }
+        }
+
         public static void TranslateControls(Control control)
         {
             var setterList = new List<Action>();
 
             setterList.Add(()=>UpdateTextBasedOnName(control));
+            setterList.Add(()=>UpdateComboBoxValues(control));
 
             foreach (Control child in control.Controls.AsParallel())
             {
