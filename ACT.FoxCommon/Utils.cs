@@ -67,7 +67,17 @@ namespace ACT.FoxCommon
         }
 
         public static ActPluginData FindFFXIVPlugin() => ActGlobals.oFormActMain.ActPlugins
-            .FirstOrDefault(data => data.pluginFile.Name.ToUpper() == "FFXIV_ACT_Plugin.dll".ToUpper());
+            .FirstOrDefault(data =>
+            {
+                if (data.pluginFile.Name.ToUpper() != "FFXIV_ACT_Plugin.dll".ToUpper())
+                {
+                    return false;
+                }
+
+                dynamic plugin = data.pluginObj;
+
+                return plugin?.PluginStarted ?? false;
+            });
 
         /// <summary>
         /// Whether the plugin is currently running in CafeACT (a modified version of the original ACT).
