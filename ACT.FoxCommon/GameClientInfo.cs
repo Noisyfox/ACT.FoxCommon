@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Advanced_Combat_Tracker;
 
 namespace ACT.FoxCommon
 {
@@ -15,8 +13,7 @@ namespace ACT.FoxCommon
         /// </summary>
         public static GameLanguage GetLanguage()
         {
-            dynamic ffxivPlugin = ActGlobals.oFormActMain.ActPlugins
-                .FirstOrDefault(data => data.pluginFile.Name.ToUpper() == "FFXIV_ACT_Plugin.dll".ToUpper())?.pluginObj;
+            dynamic ffxivPlugin = Utils.FindFFXIVPlugin()?.pluginObj;
 
             if (ffxivPlugin == null)
             {

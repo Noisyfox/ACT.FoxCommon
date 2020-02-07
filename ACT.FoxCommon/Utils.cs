@@ -2,9 +2,11 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
+using Advanced_Combat_Tracker;
 using FontFamily = System.Windows.Media.FontFamily;
 
 namespace ACT.FoxCommon
@@ -63,6 +65,9 @@ namespace ACT.FoxCommon
                 bar.Value = defaultValue;
             }
         }
+
+        public static ActPluginData FindFFXIVPlugin() => ActGlobals.oFormActMain.ActPlugins
+            .FirstOrDefault(data => data.pluginFile.Name.ToUpper() == "FFXIV_ACT_Plugin.dll".ToUpper());
 
         /// <summary>
         /// Whether the plugin is currently running in CafeACT (a modified version of the original ACT).
