@@ -51,10 +51,12 @@ namespace ACT.FoxCommon.localization
                 var items = combo.Items.Cast<object>().ToList();
                 if (items.All(obj => obj is string))
                 {
-                    var translated = items.Cast<string>().Select(key => GetString(control.Name + key) ?? key);
+                    var translated = items.Cast<string>().Select(key => GetString(control.Name + key) ?? key).ToArray();
 
-                    combo.Items.Clear();
-                    combo.Items.AddRange(translated.ToArray());
+                    for (var i = 0; i < translated.Length; i++)
+                    {
+                        combo.Items[i] = translated[i];
+                    }
                 }
             }
         }
