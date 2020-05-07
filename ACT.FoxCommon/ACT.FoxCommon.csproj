@@ -63,6 +63,9 @@
     <Compile Include="core\SettingsRepairDialog.Designer.cs">
       <DependentUpon>SettingsRepairDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="dpi\ControlDpiExtensions.cs" />
+    <Compile Include="dpi\ControlUtil.cs" />
+    <Compile Include="dpi\DpiUtil.cs" />
     <Compile Include="Ext.cs" />
     <Compile Include="core\IPluginComponent.cs" />
     <Compile Include="GameClientInfo.cs" />
