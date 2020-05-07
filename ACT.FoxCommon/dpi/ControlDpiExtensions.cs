@@ -86,7 +86,7 @@ namespace ACT.FoxCommon.dpi
                     //         break;
                     //     }
 
-                    case TextBoxBase textBox when textBox.Margin == new Padding(12):
+                    case TextBoxBase textBox/* when textBox.Margin == new Padding(12)*/:
                         {
                             // Work around a bug in WinForms where the control's margin gets scaled beyond expectations
                             // see https://github.com/gitextensions/gitextensions/issues/5098
@@ -94,7 +94,7 @@ namespace ACT.FoxCommon.dpi
                             break;
                         }
 
-                    case UpDownBase upDown when upDown.Margin == new Padding(96):
+                    case UpDownBase upDown/* when upDown.Margin == new Padding(96)*/:
                         {
                             // Work around a bug in WinForms where the control's margin gets scaled beyond expectations
                             // see https://github.com/gitextensions/gitextensions/issues/5098
