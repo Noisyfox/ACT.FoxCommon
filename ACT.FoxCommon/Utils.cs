@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -83,5 +84,10 @@ namespace ACT.FoxCommon
         /// Whether the plugin is currently running in CafeACT (a modified version of the original ACT).
         /// </summary>
         public static bool IsCafeACT => System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name == "CafeACT";
+
+        public static bool IsLoopback(this IPAddress address)
+        {
+            return Equals(address, IPAddress.Loopback) || Equals(address, IPAddress.IPv6Loopback);
+        }
     }
 }
