@@ -58,21 +58,26 @@ namespace ACT.FoxCommon
             return GameExecutables
                 .Select(Path.GetFileNameWithoutExtension)
                 .SelectMany(Process.GetProcessesByName)
+                .ToList();
+        }
+
+        public static List<uint> GetGamePids()
+        {
+            return GetGameProcesses()
                 .Select(it =>
                 {
                     try
                     {
-                        if (IsGameExeProcess(it))
-                        {
-                            return it;
-                        }
+                        return it.Id;
                     }
                     catch (Exception)
                     {
                     }
-                    return null;
+
+                    return 0;
                 })
-                .Where(it => it != null)
+                .Where(it => it != 0)
+                .Select(it => (uint) it)
                 .ToList();
         }
 
