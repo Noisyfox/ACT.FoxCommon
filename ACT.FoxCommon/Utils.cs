@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -14,11 +15,15 @@ namespace ACT.FoxCommon
 {
     public static class Utils
     {
+        private static readonly HashSet<string> GameExecutables = new HashSet<string>(new []
+        {
+            "ffxiv.exe", "ffxiv_dx11.exe"
+        });
 
         public static bool IsGameExePath(string path)
         {
             var exe = Path.GetFileName(path);
-            return exe == "ffxiv.exe" || exe == "ffxiv_dx11.exe";
+            return GameExecutables.Contains(exe);
         }
 
         public static bool IsActExePath(string path)
@@ -46,6 +51,29 @@ namespace ACT.FoxCommon
         public static bool IsGameExeProcess(Process p)
         {
             return IsGameExePath(p.MainModule.FileName);
+        }
+
+        public static List<Process> GetGameProcesses()
+        {
+            return GameExecutables
+                .Select(Path.GetFileNameWithoutExtension)
+                .SelectMany(Process.GetProcessesByName)
+                .Select(it =>
+                {
+                    try
+                    {
+                        if (IsGameExeProcess(it))
+                        {
+                            return it;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    return null;
+                })
+                .Where(it => it != null)
+                .ToList();
         }
 
         public static long TimestampMillisFromDateTime(DateTime date)
