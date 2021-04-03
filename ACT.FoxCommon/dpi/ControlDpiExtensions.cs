@@ -53,6 +53,15 @@ namespace ACT.FoxCommon.dpi
                             break;
                         }
 
+                    case DataGridView dataGridView:
+                        {
+                            if (isDpiScaled && dataGridView.Tag as string != "__DPI_SCALED__")
+                            {
+                                dataGridView.Tag = "__DPI_SCALED__";
+                                dataGridView.RowTemplate.Height = DpiUtil.Scale(dataGridView.RowTemplate.Height);
+                            }
+                            break;
+                        }
                     // case TabControl tabControl:
                     //     {
                     //         if (!isDpiScaled)
