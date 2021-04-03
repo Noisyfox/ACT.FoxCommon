@@ -44,6 +44,21 @@ namespace ACT.FoxCommon.localization
             }
         }
 
+        private static void UpdateColumnHeader(Control control)
+        {
+            if (control is DataGridView gridView)
+            {
+                foreach (DataGridViewColumn column in gridView.Columns)
+                {
+                    var t = GetString(column.Name);
+                    if (t != null)
+                    {
+                        column.HeaderText = t;
+                    }
+                }
+            }
+        }
+
         private static void UpdateComboBoxValues(Control control)
         {
             if (control is ComboBox combo)
@@ -65,8 +80,9 @@ namespace ACT.FoxCommon.localization
         {
             var setterList = new List<Action>();
 
-            setterList.Add(()=>UpdateTextBasedOnName(control));
-            setterList.Add(()=>UpdateComboBoxValues(control));
+            setterList.Add(() => UpdateTextBasedOnName(control));
+            setterList.Add(() => UpdateColumnHeader(control));
+            setterList.Add(() => UpdateComboBoxValues(control));
 
             foreach (Control child in control.Controls.AsParallel())
             {
