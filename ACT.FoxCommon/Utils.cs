@@ -57,7 +57,18 @@ namespace ACT.FoxCommon
         {
             return GameExecutables
                 .Select(Path.GetFileNameWithoutExtension)
-                .SelectMany(Process.GetProcessesByName)
+                .SelectMany(s =>
+                {
+                    try
+                    {
+                        return Process.GetProcessesByName(s);
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                })
+                .Where(it => it != null)
                 .ToList();
         }
 
@@ -72,9 +83,8 @@ namespace ACT.FoxCommon
                     }
                     catch (Exception)
                     {
+                        return 0;
                     }
-
-                    return 0;
                 })
                 .Where(it => it != 0)
                 .Select(it => (uint) it)
