@@ -72,6 +72,7 @@
     <Compile Include="localization\LanguageDef.cs" />
     <Compile Include="localization\LocalizationBase.cs" />
     <Compile Include="core\MainControllerBase.cs" />
+    <Compile Include="logging\Logger.cs" />
     <Compile Include="MessageBoxManager.cs" />
     <Compile Include="core\PluginBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,5 +96,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

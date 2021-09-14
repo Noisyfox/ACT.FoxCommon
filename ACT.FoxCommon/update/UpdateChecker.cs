@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using ACT.FoxCommon.core;
+using ACT.FoxCommon.logging;
 using Newtonsoft.Json.Linq;
 
 namespace ACT.FoxCommon.update
@@ -139,7 +140,7 @@ namespace ACT.FoxCommon.update
                 catch (Exception ex)
                 {
                     context.Controller.NotifyVersionChecked(false, null, context.ForceNotify);
-                    context.Controller.NotifyLogMessageAppend(false, ex + "\n");
+                    Logger.Error("Failed to check update", ex);
                 }
             }
         }

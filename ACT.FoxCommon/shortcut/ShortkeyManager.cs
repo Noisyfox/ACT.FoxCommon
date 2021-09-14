@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using ACT.FoxCommon;
 using ACT.FoxCommon.core;
+using ACT.FoxCommon.logging;
 using ACT.FoxCommon.shortcut;
 using GlobalHotKey;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
@@ -59,7 +60,7 @@ namespace ACT.FFXIVPing
                 catch (Exception e)
                 {
                     _controller.NotifyShortcutRegister(fromView, shortcut, true, false);
-                    _controller.NotifyLogMessageAppend(fromView, $"Shortkey register failed: {e}\n");
+                    Logger.Error("Shortkey register failed", e);
                 }
             }
         }
