@@ -128,6 +128,11 @@ namespace ACT.FoxCommon
         /// </summary>
         public static bool IsCafeACT => System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name == "CafeACT";
 
+        /// <summary>
+        /// Whether the plugin is currently running in DieMoe ACT (a modified version of the original ACT).
+        /// </summary>
+        public static bool IsDieMoeACT => System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name == "ACT.DieMoe.Launcher";
+
         public static bool IsLoopback(this IPAddress address)
         {
             return Equals(address, IPAddress.Loopback) || Equals(address, IPAddress.IPv6Loopback);

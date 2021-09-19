@@ -15,10 +15,10 @@ namespace ACT.FoxCommon.update
         where TMainController : MainControllerBase
     {
         /// <summary>
-        /// Disable & hide update checker if we are running inside CafeACT
-        /// since it has its own plugin manager.
+        /// Disable & hide update checker if we are running inside modified ACT env which
+        /// comes with its own plugin manager.
         /// </summary>
-        public static readonly bool IsEnabled = !Utils.IsCafeACT;
+        public static readonly bool IsEnabled = !(Utils.IsCafeACT || Utils.IsDieMoeACT);
 
         protected abstract string UpdateUrl { get; }
 
