@@ -7,16 +7,30 @@ namespace ACT.FoxCommon
     {
         public static object SafeInvoke(this Control control, Delegate method)
         {
-            var asyncResult = control.BeginInvoke(method);
+            if (control.InvokeRequired)
+            {
+                var asyncResult = control.BeginInvoke(method);
 
-            return SafeWait(control, asyncResult);
+                return SafeWait(control, asyncResult);
+            }
+            else
+            {
+                return method.DynamicInvoke();
+            }
         }
 
         public static object SafeInvoke(this Control control, Delegate method, object[] args)
         {
-            var asyncResult = control.BeginInvoke(method, args);
+            if (control.InvokeRequired)
+            {
+                var asyncResult = control.BeginInvoke(method, args);
 
-            return SafeWait(control, asyncResult);
+                return SafeWait(control, asyncResult);
+            }
+            else
+            {
+                return method.DynamicInvoke(args);
+            }
         }
 
         private static object SafeWait(Control control, IAsyncResult result)
