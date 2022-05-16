@@ -61,7 +61,7 @@ namespace ACT.FoxCommon.localization
 
         private static void UpdateComboBoxValues(Control control)
         {
-            if (control is ComboBox combo)
+            if (control is ComboBox combo && combo.DataSource == null)
             {
                 var items = combo.Items.Cast<object>().ToList();
                 if (items.All(obj => obj is string))
