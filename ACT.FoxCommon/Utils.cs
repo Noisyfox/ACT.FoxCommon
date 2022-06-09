@@ -53,11 +53,11 @@ namespace ACT.FoxCommon
             return IsGameExePath(p.MainModule.FileName);
         }
 
-        public static List<Process> GetGameProcesses()
+        public static List<ProcessInfo> GetGameProcesses()
         {
             return GameExecutables
                 .Select(Path.GetFileNameWithoutExtension)
-                .SelectMany(s =>
+                .SelectManyNotDefault(s =>
                 {
                     try
                     {
@@ -68,26 +68,24 @@ namespace ACT.FoxCommon
                         return null;
                     }
                 })
-                .Where(it => it != null)
+                .SelectNotDefault(it =>
+                {
+                    try
+                    {
+                        return new ProcessInfo(it);
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                })
                 .ToList();
         }
 
         public static List<uint> GetGamePids()
         {
             return GetGameProcesses()
-                .Select(it =>
-                {
-                    try
-                    {
-                        return it.Id;
-                    }
-                    catch (Exception)
-                    {
-                        return 0;
-                    }
-                })
-                .Where(it => it != 0)
-                .Select(it => (uint) it)
+                .Select(it => it.Pid)
                 .ToList();
         }
 

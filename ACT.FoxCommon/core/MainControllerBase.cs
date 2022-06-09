@@ -52,22 +52,22 @@ namespace ACT.FoxCommon.core
         }
 
 
-        public delegate void OnActivatedProcessPathChangedDelegate(bool fromView, string path, uint pid);
+        public delegate void OnActivatedProcessPathChangedDelegate(bool fromView, ProcessInfo process);
 
         public event OnActivatedProcessPathChangedDelegate ActivatedProcessPathChanged;
 
-        public void NotifyActivatedProcessPathChanged(bool fromView, string path, uint pid)
+        public void NotifyActivatedProcessPathChanged(bool fromView, ProcessInfo process)
         {
-            ActivatedProcessPathChanged?.Invoke(fromView, path, pid);
+            ActivatedProcessPathChanged?.Invoke(fromView, process);
         }
 
-        public delegate void OnGameProcessUpdated(bool fromView, HashSet<uint> pids);
+        public delegate void OnGameProcessUpdated(bool fromView, HashSet<ProcessInfo> processes);
 
         public event OnGameProcessUpdated GameProcessUpdated;
 
-        public void NotifyGameProcessUpdated(bool fromView, HashSet<uint> pids)
+        public void NotifyGameProcessUpdated(bool fromView, HashSet<ProcessInfo> processes)
         {
-            GameProcessUpdated?.Invoke(fromView, pids);
+            GameProcessUpdated?.Invoke(fromView, processes);
         }
 
         public delegate void OnShortcutChanged(bool fromView, PluginShortcut shortcut, Keys key);

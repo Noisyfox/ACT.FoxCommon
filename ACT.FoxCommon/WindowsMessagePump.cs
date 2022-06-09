@@ -1,5 +1,6 @@
 ﻿using System;
 using ACT.FoxCommon.core;
+using ACT.FoxCommon.logging;
 
 namespace ACT.FoxCommon
 {
@@ -12,8 +13,7 @@ namespace ACT.FoxCommon
 
 //        private Win32APIUtils.WinEventDelegate _hookPtrDele;
 //        private IntPtr _hookPtrForeground = IntPtr.Zero;
-        private string _lastActivatedProcessPath = null;
-        private uint _lastActivatedProcessPid = 0;
+        private ProcessInfo _lastActivatedProcess = null;
         private readonly ForgeProcessDetector _forgeProcessDetector = new ForgeProcessDetector();
 
         public virtual void AttachToAct(TPlugin plugin)
@@ -63,28 +63,25 @@ namespace ACT.FoxCommon
             {
                 return;
             }
-            Tuple<string, uint> pathPid = null;
+            ProcessInfo process = null;
             if (hwnd != IntPtr.Zero)
             {
-                pathPid = Win32APIUtils.GetProcessPathByWindow(hwnd);
+                process = Win32APIUtils.GetProcessPathByWindow(hwnd);
             }
-            if (pathPid == null)
+            if (process == null)
             {
-                pathPid = Win32APIUtils.GetForgegroundProcessPath();
+                process = Win32APIUtils.GetForegroundProcessPath();
             }
-            if (pathPid == null)
+            if (process == null)
             {
                 return;
             }
 
-            var path = pathPid.Item1;
-            var pid = pathPid.Item2;
-
-            if (_lastActivatedProcessPath != path || _lastActivatedProcessPid != pid)
+            if (_lastActivatedProcess != process)
             {
-                _lastActivatedProcessPath = path;
-                _lastActivatedProcessPid = pid;
-                Controller.NotifyActivatedProcessPathChanged(false, path, pid);
+                _lastActivatedProcess = process;
+                Controller.NotifyActivatedProcessPathChanged(false, process);
+                Logger.Debug($"Activated process changed: {process}");
             }
             //            Log.Text += GetActiveWindowTitle() + "\r\n";
 //            _controller.NotifyLogMessageAppend(false, path + "\r\n");

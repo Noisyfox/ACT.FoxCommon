@@ -74,7 +74,7 @@ namespace ACT.FoxCommon
             SetWindowPos(handle, HWND_TOP, 0, 0, w, h, SWP_NOMOVE);
         }
 
-        public static Tuple<string, uint> GetForgegroundProcessPath()
+        public static ProcessInfo GetForegroundProcessPath()
         {
             var hWndFg = GetForegroundWindow();
             if (hWndFg == IntPtr.Zero)
@@ -84,7 +84,7 @@ namespace ACT.FoxCommon
             return GetProcessPathByWindow(hWndFg);
         }
 
-        public static Tuple<string, uint> GetProcessPathByWindow(IntPtr hWnd)
+        public static ProcessInfo GetProcessPathByWindow(IntPtr hWnd)
         {
             GetWindowThreadProcessId(hWnd, out var pid);
             if (pid == 0)
@@ -94,8 +94,7 @@ namespace ACT.FoxCommon
 
             try
             {
-                var processPath = Process.GetProcessById((int)pid).MainModule?.FileName;
-                return processPath == null ? null : new Tuple<string, uint>(processPath, pid);
+                return new ProcessInfo(Process.GetProcessById((int)pid));
             }
             catch (Exception)
             {

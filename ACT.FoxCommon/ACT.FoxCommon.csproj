@@ -75,6 +75,7 @@
     <Compile Include="logging\Logger.cs" />
     <Compile Include="MessageBoxManager.cs" />
     <Compile Include="core\PluginBase.cs" />
+    <Compile Include="ProcessInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SafeThreadInvoker.cs" />
     <Compile Include="shortcut\ShortcutDialog.cs">
