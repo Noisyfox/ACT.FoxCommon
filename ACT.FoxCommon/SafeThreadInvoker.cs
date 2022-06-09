@@ -68,7 +68,14 @@ namespace ACT.FoxCommon
             }
             else
             {
-                target.AppendText($"\n[{DateTime.Now.ToLongTimeString()}] {text}");
+                if (target.TextLength > 0)
+                {
+                    target.AppendText($"\n[{DateTime.Now.ToLongTimeString()}] {text}");
+                }
+                else
+                {
+                    target.AppendText($"[{DateTime.Now.ToLongTimeString()}] {text}");
+                }
                 target.ScrollToCaret();
             }
         }
