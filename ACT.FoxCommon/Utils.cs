@@ -15,9 +15,11 @@ namespace ACT.FoxCommon
 {
     public static class Utils
     {
+        public static readonly string GameExeNameDx11 = "ffxiv_dx11.exe";
+
         private static readonly HashSet<string> GameExecutables = new HashSet<string>(new []
         {
-            "ffxiv.exe", "ffxiv_dx11.exe"
+            "ffxiv.exe", GameExeNameDx11
         });
 
         public static bool IsGameExePath(string path)
