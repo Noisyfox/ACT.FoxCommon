@@ -28,12 +28,12 @@ namespace ACT.FoxCommon
 
         public static IEnumerable<R> SelectNotDefault<T, R>(this IEnumerable<T> source, Func<T, R> selector)
         {
-            return source.Select(selector).Where(it => EqualityComparer<R>.Default.Equals(it, default));
+            return source.Select(selector).Where(it => !EqualityComparer<R>.Default.Equals(it, default));
         }
 
         public static IEnumerable<R> SelectManyNotDefault<T, R>(this IEnumerable<T> source, Func<T, IEnumerable<R>> selector)
         {
-            return source.SelectMany(selector).Where(it => EqualityComparer<R>.Default.Equals(it, default));
+            return source.SelectMany(selector).Where(it => !EqualityComparer<R>.Default.Equals(it, default));
         }
     }
 }
