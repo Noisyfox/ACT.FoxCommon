@@ -7,6 +7,11 @@ namespace ACT.FoxCommon
     {
         public static object SafeInvoke(this Control control, Delegate method)
         {
+            if (control.IsDisposed || control.Disposing || !control.IsHandleCreated)
+            {
+                return null;
+            }
+
             if (control.InvokeRequired)
             {
                 var asyncResult = control.BeginInvoke(method);
@@ -21,6 +26,11 @@ namespace ACT.FoxCommon
 
         public static object SafeInvoke(this Control control, Delegate method, object[] args)
         {
+            if (control.IsDisposed || control.Disposing || !control.IsHandleCreated)
+            {
+                return null;
+            }
+
             if (control.InvokeRequired)
             {
                 var asyncResult = control.BeginInvoke(method, args);
@@ -59,6 +69,11 @@ namespace ACT.FoxCommon
 
         public static void AppendDateTimeLine(this RichTextBox target, string text)
         {
+            if (target.IsDisposed || target.Disposing || !target.IsHandleCreated)
+            {
+                return;
+            }
+
             if (target.InvokeRequired)
             {
                 target.SafeInvoke(new Action(delegate
