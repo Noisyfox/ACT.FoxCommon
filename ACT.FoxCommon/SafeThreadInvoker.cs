@@ -5,9 +5,31 @@ namespace ACT.FoxCommon
 {
     public static class SafeThreadInvoker
     {
+
+        private static bool IsAlive(this Control control)
+        {
+            if (control.IsDisposed || control.Disposing)
+            {
+                return false;
+            }
+
+            // Impl of Control.FindMarshalingControl()
+            var mc = control;
+            while (mc != null && !mc.IsHandleCreated)
+            {
+                mc = mc.Parent;
+            }
+            if (mc == null)
+            {
+                mc = control;
+            }
+
+            return mc.IsHandleCreated;
+        }
+
         public static object SafeInvoke(this Control control, Delegate method)
         {
-            if (control.IsDisposed || control.Disposing || !control.IsHandleCreated)
+            if (!control.IsAlive())
             {
                 return null;
             }
@@ -26,7 +48,7 @@ namespace ACT.FoxCommon
 
         public static object SafeInvoke(this Control control, Delegate method, object[] args)
         {
-            if (control.IsDisposed || control.Disposing || !control.IsHandleCreated)
+            if (!control.IsAlive())
             {
                 return null;
             }
@@ -52,7 +74,7 @@ namespace ACT.FoxCommon
 
             for (var i = 0; i < 50; i++)
             {
-                if (control.IsDisposed || control.Disposing || !control.IsHandleCreated)
+                if (!control.IsAlive())
                 {
                     break;
                 }
@@ -69,7 +91,7 @@ namespace ACT.FoxCommon
 
         public static void AppendDateTimeLine(this RichTextBox target, string text)
         {
-            if (target.IsDisposed || target.Disposing || !target.IsHandleCreated)
+            if (!target.IsAlive())
             {
                 return;
             }
